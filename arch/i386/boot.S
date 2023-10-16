@@ -21,7 +21,7 @@ stack_top:
 
 ; 32-bit protected mode, no interrupts, no paging, no extensions or FP operations.
 section .text
-global _start:function(_start.end - _start) ; We pass ELF extension symbol type and size
+global _start:function ; We pass ELF extension symbol type and size
 _start:
 	mov esp, stack_top
 
