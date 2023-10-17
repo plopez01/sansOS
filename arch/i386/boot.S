@@ -1,7 +1,8 @@
 ; Multiboot 1 header (migration to Multiboot 2 is pendant)
 MB_ALIGN equ 1 << 0
 MEMINFO equ 1 << 1
-MB_FLAGS equ MB_ALIGN | MEMINFO
+FRAMEBUFFER equ 1 << 12;
+MB_FLAGS equ MB_ALIGN | MEMINFO | FRAMEBUFFER
 
 MB_MAGIC equ 0x1BADB002 ; Multiboot 1 magic value
 CHECKSUM equ -(MB_MAGIC + MB_FLAGS)
@@ -24,7 +25,8 @@ section .text
 global _start:function ; We pass ELF extension symbol type and size
 _start:
 	mov esp, stack_top
-
+	
+	push ebx ; Push multiboot info struct to stack for the kernel to read
 	extern kernel_main
 	call kernel_main
 
