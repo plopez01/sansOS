@@ -18,6 +18,7 @@ sansos.bin : kernel.o boot.o linker.ld
 	i686-elf-gcc -T linker.ld -o $@ -ffreestanding -O2 -nostdlib boot.o kernel.o -lgcc
 
 sansos.iso : sansos.bin grub.cfg
+	mkdir -p isodir/boot/grub
 	cp sansos.bin isodir/boot
 	cp grub.cfg isodir/boot/grub
 	grub-mkrescue -o $@ isodir
