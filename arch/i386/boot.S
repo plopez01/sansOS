@@ -1,18 +1,26 @@
-; Multiboot 1 header (migration to Multiboot 2 is pendant)
-MB_ALIGN equ 1 << 0
-MEMINFO equ 1 << 1
-FRAMEBUFFER equ 1 << 12;
-MB_FLAGS equ MB_ALIGN | MEMINFO | FRAMEBUFFER
+MB_MAGIC equ 0xE85250D6
+ARCH equ 0
+HEADER_LENGTH equ header_end - header_start
 
-MB_MAGIC equ 0x1BADB002 ; Multiboot 1 magic value
-CHECKSUM equ -(MB_MAGIC + MB_FLAGS)
+CHECKSUM equ 0x100000000 - (MB_MAGIC + ARCH + HEADER_LENGTH)
+
 
 section .multiboot
+header_start:
 align 4
 	dd MB_MAGIC
-	dd MB_FLAGS
+	dd ARCH
+	dd header_end - header_start
 	dd CHECKSUM
 
+	dw 6
+	dw 0
+	dd 8
+
+	dw 0
+	dw 0 
+	dd 0
+header_end:
 
 section .bss
 align 16
@@ -34,5 +42,4 @@ _start:
 .hang: hlt
 	jmp .hang
 .end:
-
 
